@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Meu Checklist ✅</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #e5e5e5; display: flex; justify-content: center; margin-top: 50px; }
+        .bloco-principal { background: white; width: 400px; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        h1 { text-align: center; color: #333; }
+        
+        /* Formulário */
+        form { display: flex; gap: 10px; margin-bottom: 20px; }
+        input[type="text"] { flex-grow: 1; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        button { background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #218838; }
+
+        /* Lista de Tarefas */
+        ul { list-style: none; padding: 0; }
+        li { background: #f9f9f9; border-bottom: 1px solid #eee; padding: 10px; display: flex; justify-content: space-between; align-items: center; }
+        
+        /* Links de Ação */
+        a { text-decoration: none; font-size: 0.9em; margin-left: 10px; }
+        .btn-delete { color: red; }
+        .btn-check { color: #007bff; font-weight: bold; cursor: pointer; }
+
+        /* Estilo quando a tarefa está concluída (Riscada) */
+        .concluida { text-decoration: line-through; color: #888; }
+    </style>
+</head>
+<body>
+
+    <div class="bloco-principal">
+        <h1>Minhas Tarefas 📝</h1>
+
+        <form action="/checklist/criar" method="post">
+            <input type="text" name="descricao" placeholder="O que vamos fazer hoje?" required>
+            <button type="submit">Adicionar</button>
+        </form>
+
+        <ul>
+            <li th:each="item : ${tarefas}">
+                <span th:text="${item.descricao}" 
+                      th:classappend="${item.concluida} ? 'concluida' : ''">
+                    Comprar pão
+                </span>
+
+                <div>
+                    <a th:href="@{/checklist/concluir/{id}(id=${item.id})}" class="btn-check">
+                        <span th:if="${!item.concluida}">⬜</span>
+                        <span th:if="${item.concluida}">✅</span>
+                    </a>
+                    
+                    <a th:href="@{/checklist/deletar/{id}(id=${item.id})}" class="btn-delete">🗑️</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+</body>
+</html>
+<div style="text-align: center; margin-top: 30px; color: #888; font-size: 0.8em;">
+        <p>Design desenvolvido com auxílio de Inteligência Artificial.</p>
+    </div>
